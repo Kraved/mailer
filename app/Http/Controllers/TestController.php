@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repository\MailListRepository;
 use Illuminate\Http\Request;
 use Faker\Factory as Faker;
 
@@ -12,10 +13,10 @@ class TestController extends Controller
         return view('welcome');
     }
 
-    public function test()
+    public function test(MailListRepository $listRepository)
     {
-        $generator = Faker::create();
-        dd($generator->email);
+
+        dd($listRepository->getAllWithPaginate(10));
     }
 
 

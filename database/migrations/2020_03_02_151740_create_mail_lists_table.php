@@ -13,7 +13,7 @@ class CreateMailListsTable extends Migration
      */
     public function up()
     {
-        Schema::create('mail_lists', function (Blueprint $table) {
+        Schema::create('mail_list', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('emails');
             $table->timestamps();
@@ -28,6 +28,6 @@ class CreateMailListsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mail_lists');
+        Schema::dropIfExists('mail_list');
     }
 }

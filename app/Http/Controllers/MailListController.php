@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repository\MailListRepository;
 use Illuminate\Http\Request;
 
 class MailListController extends Controller
@@ -9,11 +10,14 @@ class MailListController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param MailListRepository $listRepository
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(MailListRepository $listRepository)
     {
-        //
+        $emails = $listRepository->getAllWithPaginate(10);
+        return view('', compact('emails'));
+
     }
 
     /**

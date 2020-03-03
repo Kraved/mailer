@@ -23,13 +23,6 @@ class UsersTableSeeder extends Seeder
                 'password' => password_hash('admin', PASSWORD_DEFAULT), // password
                 'remember_token' => Str::random(10),
             ],
-            [
-                'name' => 'unknown',
-                'email' => $faker->companyEmail,
-                'email_verified_at' => now(),
-                'password' => password_hash($faker->password, 1), // password
-                'remember_token' => Str::random(10),
-            ],
         ];
         DB::table('users')->insert($users);
 
