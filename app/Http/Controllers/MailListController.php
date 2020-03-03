@@ -16,8 +16,7 @@ class MailListController extends Controller
     public function index(MailListRepository $listRepository)
     {
         $emails = $listRepository->getAllWithPaginate(10);
-        return view('', compact('emails'));
-
+        return view('mailer.maillist.index', compact('emails'));
     }
 
     /**
