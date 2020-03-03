@@ -73,6 +73,8 @@
         </nav>
 
         <main class="py-4">
+            @include('layouts.includes.errors_block')
+            @include('layouts.includes.success_block')
             @yield('content')
         </main>
     </div>

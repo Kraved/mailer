@@ -15,7 +15,7 @@ class MailListController extends Controller
      */
     public function index(MailListRepository $listRepository)
     {
-        $emails = $listRepository->getAllWithPaginate(10);
+        $emails = $listRepository->getAllWithPaginate(30);
         return view('mailer.maillist.index', compact('emails'));
     }
 
@@ -59,7 +59,7 @@ class MailListController extends Controller
      */
     public function edit($id)
     {
-        //
+        dd(__METHOD__, $id);
     }
 
     /**
@@ -82,6 +82,6 @@ class MailListController extends Controller
      */
     public function destroy($id)
     {
-        //
+       dd(__METHOD__, $id);
     }
 }

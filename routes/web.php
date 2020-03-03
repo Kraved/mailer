@@ -23,3 +23,12 @@ Route::get('/index', 'TestController@index');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['prefix' => 'mailer'], function () {
+    Route::resource('maillist', 'MailListController')
+        ->names('mailer.maillist')
+        ->except('show');
+});
+
+
+
