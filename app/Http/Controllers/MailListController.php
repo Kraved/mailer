@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MailList;
 use App\Repository\MailListRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class MailListController extends Controller
 {
@@ -65,23 +67,44 @@ class MailListController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @param MailList $mailList
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, MailList $mailList)
     {
-        //
+        $data = $request->all();
+        $result = $mailList->find($id)->update($data);
+        if($result){
+            return redirect(route('mailer.maillist.index'))
+                ->with(['msg' => 'Почта успешно изменения']);
+        } else {
+            return back()
+                ->withErrors(['error1' => 'Ошибка изменения'])
+                ->withInput();
+        }
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @param MailList $mailList
+     * @return void
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy($id, MailList $mailList)
     {
-       dd(__METHOD__, $id);
+        $result = $mailList->find($id)->delete();
+        if($result){
+            return redirect(route('mailer.maillist.index'))
+                ->with(['msg' => 'Почта успешно удалена']);
+        } else {
+            return back()
+                ->withErrors(['error1' => 'Ошибка удаления']);
+        }
+
     }
 }
