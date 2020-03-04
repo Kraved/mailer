@@ -28,40 +28,42 @@ class MailListController extends Controller
      */
     public function create()
     {
-        //
+        return view('mailer.maillist.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     * @param MailList $mailList
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, MailList $mailList)
     {
-        //
+        $data = $request->all();
+        $result = $mailList->create($data);
+        if ($result) {
+            return redirect(route('mailer.maillist.index'))->with(['msg' => 'Почта успешно внесена']);
+        } else {
+            return back()
+                ->withErrors(['msg' => 'Ошибка добавления почты'])
+                ->withInput();
+        }
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     * @param MailList $mailList
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, MailList $mailList)
     {
-        dd(__METHOD__, $id);
+        $item = $mailList->find($id);
+        return view('mailer.maillist.edit', compact('item'));
     }
 
     /**
@@ -78,7 +80,7 @@ class MailListController extends Controller
         $result = $mailList->find($id)->update($data);
         if($result){
             return redirect(route('mailer.maillist.index'))
-                ->with(['msg' => 'Почта успешно изменения']);
+                ->with(['msg' => 'Почта успешно изменена']);
         } else {
             return back()
                 ->withErrors(['error1' => 'Ошибка изменения'])
@@ -105,6 +107,5 @@ class MailListController extends Controller
             return back()
                 ->withErrors(['error1' => 'Ошибка удаления']);
         }
-
     }
 }

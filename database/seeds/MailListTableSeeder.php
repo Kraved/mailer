@@ -18,7 +18,7 @@ class MailListTableSeeder extends Seeder
         for ($i = 0; $i < 100; $i++) {
             $mails[] =
                 [
-                    'emails' => $faker->email,
+                    'email' => $faker->email,
                     'created_at' => now(),
                 ];
         }

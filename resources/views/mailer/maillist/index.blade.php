@@ -20,7 +20,7 @@
         @foreach ($emails as $item)
             <tr>
                 <th scope="row">{{ $item->id }}</th>
-                <td><a href="{{ route('mailer.maillist.edit', $item->id) }}">{{ $item->emails }}</a></td>
+                <td><a href="{{ route('mailer.maillist.edit', $item->id) }}">{{ $item->email }}</a></td>
                 <td>{{ $item->created_at }}</td>
                 <td>@include('mailer.maillist.includes.index_delete_form')</td>
             </tr>
@@ -29,5 +29,8 @@
 
         </tbody>
     </table>
+    @if ($emails->total() > $emails->count())
+        {{ $emails->links() }}
+    @endif
 
 @stop

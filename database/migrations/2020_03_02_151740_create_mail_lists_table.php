@@ -15,7 +15,7 @@ class CreateMailListsTable extends Migration
     {
         Schema::create('mail_list', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('emails');
+            $table->string('email');
             $table->timestamps();
             $table->softDeletes();
         });
