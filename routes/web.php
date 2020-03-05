@@ -24,10 +24,15 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['prefix' => 'mailer'], function () {
-    Route::resource('maillist', 'MailListController')
+Route::group(['prefix' => 'mailer/maillist'], function () {
+    Route::resource('mail', 'MailListController')
         ->names('mailer.maillist')
         ->except('show');
+    Route::get('fileimport', 'MailListController@importFromFile')->name('mailer.maillist.importfromfile');
+    Route::delete('deleteall', 'MailListController@deleteAll')->name('mailer.maillist.deleteall');
+    Route::get('siteimport', 'MailListController@importFromSite')->name('mailer.maillist.importfromsite');
+    Route::post('importsavefile', 'MailListController@saveFromImportFile')->name('mailer.maillist.savefromimportfile');
+    Route::post('importsavesite', 'MailListController@saveFromImportSite')->name('mailer.maillist.savefromimportsite');
 });
 
 
