@@ -3,8 +3,8 @@
 @section('content')
     <div class="text-right mb-3 mr-5">
         <a class="btn btn-primary" href="{{ route('mailer.maillist.create') }}" role="button">Добавить</a>
-        <a class="btn btn-primary" href="{{ route('mailer.maillist.importfromfile') }}" role="button">Экспорт из файла</a>
-        <a class="btn btn-primary" href="{{ route('mailer.maillist.importfromsite') }}" role="button">Экспорт с сайта</a>
+        <a class="btn btn-primary" href="{{ route('mailer.maillist.importfromfile') }}" role="button">Импорт из файла</a>
+        <a class="btn btn-primary" href="{{ route('mailer.maillist.importfromsite') }}" role="button">Импорт с сайта</a>
     </div>
 
     <table class="table table-striped text-center">
@@ -29,7 +29,7 @@
         </tbody>
     </table>
     <div class="card">
-        <div class=" card-body d-flex justify-content-between">
+        <div class="card-body">
             @if ($emails->total() > $emails->count())
                 {{ $emails->links() }}
             @endif

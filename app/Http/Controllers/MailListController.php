@@ -50,7 +50,6 @@ class MailListController extends Controller
                 ->withErrors(['msg' => 'Ошибка добавления почты'])
                 ->withInput();
         }
-
     }
 
 
@@ -144,7 +143,7 @@ class MailListController extends Controller
         $mailsArray = array_map(function ($line) {
             return str_replace(' ', '', $line);
         }, $mailsArray);
-        $pattern = "/[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]/";
+        $pattern = "/^[A-Za-z0-9][A-Za-z0-9\.\-_]*[A-Za-z0-9]*@([A-Za-z0-9]+([A-Za-z0-9-]*[A-Za-z0-9]+)*\.)+[A-Za-z]*$/";
         $data = preg_grep($pattern, $mailsArray);
         if (empty($data))
             return back()
@@ -169,7 +168,7 @@ class MailListController extends Controller
             $emailLink = str_replace('mailto:', '',$crawler->attr('href'));
             return $emailLink;
         });
-        $pattern = "/[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]/";
+        $pattern = "/^[A-Za-z0-9][A-Za-z0-9\.\-_]*[A-Za-z0-9]*@([A-Za-z0-9]+([A-Za-z0-9-]*[A-Za-z0-9]+)*\.)+[A-Za-z]*$/";
         $emails = preg_grep($pattern, $links);
         if (empty($emails))
             return back()

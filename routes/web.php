@@ -24,7 +24,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['prefix' => 'mailer/maillist'], function () {
+Route::group(['prefix' => 'maillist'], function () {
     Route::resource('mail', 'MailListController')
         ->names('mailer.maillist')
         ->except('show');
@@ -34,6 +34,7 @@ Route::group(['prefix' => 'mailer/maillist'], function () {
     Route::post('importsavefile', 'MailListController@saveFromImportFile')->name('mailer.maillist.savefromimportfile');
     Route::post('importsavesite', 'MailListController@saveFromImportSite')->name('mailer.maillist.savefromimportsite');
 });
-
+Route::get('mailer/index', 'MailerController@index')->name('mailer.mailer.index');
+Route::post('mailer/send', 'MailerController@send')->name('mailer.mailer.send');
 
 
