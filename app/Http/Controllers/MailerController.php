@@ -16,11 +16,23 @@ class MailerController extends Controller
     }
 
 
+    /**
+     * Отображение формы рассылаемого сообщения
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         return view('mailer.mailer.index');
     }
 
+    /**
+     * Отправка сообщения
+     *
+     * @param MailerSendRequest $request
+     * @param MailList $mailList
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function send(MailerSendRequest $request, MailList $mailList)
     {
         $mails = $mailList->all();
