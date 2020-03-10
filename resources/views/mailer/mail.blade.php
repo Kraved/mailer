@@ -1,1 +1,3 @@
-{{ $msg }}
+@if (isset($msg ))
+    {{ $msg }}
+@endif
