@@ -5,9 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MailListImportFileRequest;
 use App\Models\MailList;
 use App\Repository\MailListRepository;
+use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 use Symfony\Component\DomCrawler\Crawler;
 
+
+/**
+ * Контроллер работы со списком почтовых адресов
+ * @package App\Http\Controllers
+ */
 class MailListController extends Controller
 {
     public function __construct()
@@ -20,7 +29,7 @@ class MailListController extends Controller
      * Display a listing of the resource.
      *
      * @param MailListRepository $listRepository
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function index(MailListRepository $listRepository)
     {
@@ -32,7 +41,7 @@ class MailListController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return View
      */
     public function create()
     {
@@ -42,9 +51,9 @@ class MailListController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param MailList $mailList
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function store(Request $request, MailList $mailList)
     {
@@ -65,7 +74,7 @@ class MailListController extends Controller
      *
      * @param int $id
      * @param MailList $mailList
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function edit($id, MailList $mailList)
     {
@@ -76,10 +85,10 @@ class MailListController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param int $id
      * @param MailList $mailList
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function update(Request $request, $id, MailList $mailList)
     {
@@ -101,8 +110,8 @@ class MailListController extends Controller
      *
      * @param int $id
      * @param MailList $mailList
-     * @return void
-     * @throws \Exception
+     * @return RedirectResponse|Redirector
+     * @throws Exception
      */
     public function destroy($id, MailList $mailList)
     {
@@ -119,7 +128,7 @@ class MailListController extends Controller
     /**
      * Отображает форму импорта файла с почт. адресами
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return View
      */
     public function importFromFile()
     {
@@ -129,7 +138,7 @@ class MailListController extends Controller
     /**
      * Отображает форму выбора сайта для импорта с него почтовых адресов
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return View
      */
     public function importFromSite()
     {
@@ -141,7 +150,7 @@ class MailListController extends Controller
      * Вносит данные из файла в базу
      *
      * @param MailListImportFileRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function saveFromImportFile(MailListImportFileRequest $request)
     {
@@ -164,7 +173,7 @@ class MailListController extends Controller
      * Парсит сайт в поиске почтовых адресов
      *
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function saveFromImportSite(Request $request)
     {
@@ -201,12 +210,14 @@ class MailListController extends Controller
     /**
      * Удаляет все данные из таблицы
      *
+     *
      * @param MailList $mailList
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return Redirector
      */
     public function deleteAll(MailList $mailList)
     {
-        $result = $mailList->truncate();
+
+        $mailList->truncate();
         return redirect(route("mailer.maillist.index"))
             ->with(['msg' => 'Все данные успешно удалены']);
     }

@@ -5,8 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MailerSendRequest;
 use App\Mail\Mailer;
 use App\Models\MailList;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 
+/**
+ * Контроллер рассылки
+ * @package App\Http\Controllers
+ */
 class MailerController extends Controller
 {
 
@@ -20,7 +27,7 @@ class MailerController extends Controller
     /**
      * Отображение формы рассылаемого сообщения
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return View
      */
     public function index()
     {
@@ -32,7 +39,7 @@ class MailerController extends Controller
      *
      * @param MailerSendRequest $request
      * @param MailList $mailList
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      */
     public function send(MailerSendRequest $request, MailList $mailList)
     {
