@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\SendEmailAfterRegistrationJob;
+use App\Mail\AfterRegistrationMail;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -66,8 +66,9 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $job = (new SendEmailAfterRegistrationJob($data['name']));
-        dispatch($job);
+
+        Mail::to('it@lexsysstems.ru')
+            ->send(new AfterRegistrationMail($data['name']));
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
