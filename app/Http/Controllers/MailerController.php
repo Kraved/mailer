@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 class MailerController extends Controller
 {
 
+
     public function __construct()
     {
         $this->middleware('auth');

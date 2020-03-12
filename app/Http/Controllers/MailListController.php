@@ -24,6 +24,7 @@ class MailListController extends Controller
      */
     public function index(MailListRepository $listRepository)
     {
+
         $emails = $listRepository->getAllWithPaginate(30);
         return view('mailer.maillist.index', compact('emails'));
     }
@@ -31,7 +32,7 @@ class MailListController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
