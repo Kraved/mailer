@@ -26,7 +26,7 @@ class MailerSendRequest extends FormRequest
     {
         return [
             'subject' => 'required|string|min:5|max:40',
-            'message' => 'required|string|min:5|max:2000',
+            'text' => 'required|string|min:5|max:2000',
             'file' => 'file|max:2000'
         ];
     }
@@ -38,10 +38,10 @@ class MailerSendRequest extends FormRequest
             'subject.string' => 'Тема письма должна содержать строку',
             'subject.min' => 'Минимальная длинна темы письма 5 символов',
             'subject.max' => 'Максимальная длинна темы письма 40 символов',
-            'message.required' => 'Введите текст письма',
-            'message.string' => 'Сообщение должно содержать строку',
-            'message.min' => 'Минимальная длинна сообщения 5 символов',
-            'message.max' => 'Максимальная длинна сообщения 2000 символов',
+            'text.required' => 'Введите текст письма',
+            'text.string' => 'Сообщение должно содержать строку',
+            'text.min' => 'Минимальная длинна сообщения 5 символов',
+            'text.max' => 'Максимальная длинна сообщения 2000 символов',
             'file.uploaded' => 'Максимальный размер прикрепленного файла 2Мб',
         ];
     }

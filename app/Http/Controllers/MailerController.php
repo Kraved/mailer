@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MailerSendRequest;
-use App\Mail\Mailer;
+use App\Jobs\MailerJob;
 use App\Models\MailList;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 /**
@@ -44,14 +43,10 @@ class MailerController extends Controller
     public function send(MailerSendRequest $request, MailList $mailList)
     {
         $mails = $mailList->all();
-        $subject = $request->subject;
-        $message = $request->message;
-        $file = $request->file('file');
-        foreach ($mails as $mail) {
-            $email = str_replace("\n", '', $mail->email);
-            Mail::to($email)
-                ->send(new Mailer($subject, $message, $file));
-            $result[] = "Сообщение на почту {$email} успешно доставлено";
+        $message = (array)$request->all();
+        foreach ($mails as $item) {
+            $this->dispatch(new MailerJob($item->email,$message));
+            $result[] = "Сообщение на почту {$item->email} поставлено в очередь";
         }
         return redirect(route('mailer.mailer.index'))
             ->with(['success' => $result]);

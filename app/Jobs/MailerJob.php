@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\AfterRegistrationMail;
+use App\Mail\Mailer;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -10,22 +10,28 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
-class SendEmailAfterRegistrationJob implements ShouldQueue
+class MailerJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     /**
-     * @var string $name
+     * @var string
      */
-    private $name;
+    private $email;
+    /**
+     * @var array
+     */
+    private $message;
 
     /**
      * Create a new job instance.
      *
-     * @param string $name
+     * @param string $email
+     * @param array $message
      */
-    public function __construct(string $name)
+    public function __construct(string $email, array $message)
     {
-        $this->name = $name;
+        $this->email = $email;
+        $this->message = $message;
     }
 
     /**
@@ -35,7 +41,6 @@ class SendEmailAfterRegistrationJob implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to('kravchenko-vv@lexsystems.ru')
-            ->send(new AfterRegistrationMail($this->name));
+        Mail::to($this->email)->send(new Mailer($this->message));
     }
 }
