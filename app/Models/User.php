@@ -45,9 +45,22 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Переопределяет текст нотайс верификации почты
+     */
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyMailNotification());
+    }
+
+    /**
+     * Переопределяет адрес доставки почты для верификации
+     *
+     * @return string
+     */
+    public function routeNotificationForMail()
+    {
+        return env('SYSTEM_MAIL');
     }
 
 }
