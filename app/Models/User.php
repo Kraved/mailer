@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\VerifyMailNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -13,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string $name
  * @property string $email
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 
@@ -43,4 +44,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Переопределяет текст нотайс верификации почты
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyMailNotification());
+    }
+
+    /**
+     * Переопределяет адрес доставки почты для верификации
+     *
+     * @return string
+     */
+    public function routeNotificationForMail()
+    {
+        return env('SYSTEM_MAIL');
+    }
+
 }

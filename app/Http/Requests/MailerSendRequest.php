@@ -25,9 +25,8 @@ class MailerSendRequest extends FormRequest
     public function rules()
     {
         return [
-            'subject' => 'required|string|min:5|max:40',
+            'subject' => 'required|string|min:5|max:70',
             'text' => 'required|string|min:5|max:2000',
-            'file' => 'file|max:2000'
         ];
     }
 
@@ -42,7 +41,6 @@ class MailerSendRequest extends FormRequest
             'text.string' => 'Сообщение должно содержать строку',
             'text.min' => 'Минимальная длинна сообщения 5 символов',
             'text.max' => 'Максимальная длинна сообщения 2000 символов',
-            'file.uploaded' => 'Максимальный размер прикрепленного файла 2Мб',
         ];
     }
 }
