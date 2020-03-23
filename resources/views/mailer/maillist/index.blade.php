@@ -10,10 +10,10 @@
     <table class="table table-striped text-center">
         <thead>
         <tr>
-            <th class="col-3" scope="col">#</th>
-            <th class="col-3" scope="col">Email</th>
-            <th class="col-3" scope="col">Добавлено</th>
-            <th class="col-3" scope="col">Удалить</th>
+            <th class="col-3">#</th>
+            <th class="col-3">Email</th>
+            <th class="col-3">Добавлено</th>
+            <th class="col-3">Удалить</th>
         </tr>
         </thead>
         <tbody>
