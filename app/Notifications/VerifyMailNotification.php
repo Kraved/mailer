@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\URL;
 
 class VerifyMailNotification extends Notification
 {
@@ -41,9 +42,13 @@ class VerifyMailNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('123.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->subject('Подтверждение регистрации')
+            ->greeting('Добрый день!')
+            ->line("Для того, что бы завершить регистрацию пользователя {$notifiable->name} нажмите на кнопку")
+            ->action('Подтвердить регистрацию',
+                url(URL::temporarySignedRoute('verification.verify',
+                    now()->addMinutes(60),
+                    [$notifiable->id, sha1($notifiable->getEmailForVerification())])));
     }
 
     /**
