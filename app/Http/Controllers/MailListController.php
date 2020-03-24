@@ -60,7 +60,7 @@ class MailListController extends Controller
         $data = $request->all();
         $result = $mailList->create($data);
         if ($result) {
-            return redirect(route('mailer.maillist.index'))->with(['msg' => 'Почта успешно внесена']);
+            return redirect(route('mailer.maillist.index'))->with(['success' => 'Почта успешно внесена']);
         } else {
             return back()
                 ->withErrors(['msg' => 'Ошибка добавления почты'])
@@ -96,7 +96,7 @@ class MailListController extends Controller
         $result = $mailList->findOrFail($id)->update($data);
         if($result){
             return redirect(route('mailer.maillist.index'))
-                ->with(['msg' => 'Почта успешно изменена']);
+                ->with(['success' => 'Почта успешно изменена']);
         } else {
             return back()
                 ->withErrors(['error1' => 'Ошибка изменения'])
@@ -118,7 +118,7 @@ class MailListController extends Controller
         $result = $mailList->findOrFail($id)->delete();
         if($result){
             return redirect(route('mailer.maillist.index'))
-                ->with(['msg' => 'Почта успешно удалена']);
+                ->with(['success' => 'Почта успешно удалена']);
         } else {
             return back()
                 ->withErrors(['error1' => 'Ошибка удаления']);
@@ -166,7 +166,7 @@ class MailListController extends Controller
                 ->withErrors(['msg' => 'В файле не найдено почтовых адресов!']);
         $this->saveToDB($data);
         return redirect(route('mailer.maillist.index'))
-            ->with(['msg' => 'Данные успешно внесены']);
+            ->with(['success' => 'Данные успешно внесены']);
     }
 
     /**
@@ -191,7 +191,7 @@ class MailListController extends Controller
                 ->withErrors(['msg' => 'На сайте не найдено почтовых адресов!']);
         $this->saveToDB($emails);
         return redirect(route('mailer.maillist.index'))
-            ->with(['msg' => 'Данные успешно внесены']);
+            ->with(['success' => 'Данные успешно внесены']);
     }
 
     /**
@@ -219,6 +219,6 @@ class MailListController extends Controller
 
         $mailList->truncate();
         return redirect(route("mailer.maillist.index"))
-            ->with(['msg' => 'Все данные успешно удалены']);
+            ->with(['success' => 'Все данные успешно удалены']);
     }
 }
