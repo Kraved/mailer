@@ -1,5 +1,5 @@
-@if (session()->has('success'))
-    @foreach (session('success') as $line)
+@if (session()->has('result'))
+    @foreach (session('result') as $line)
         <div class="alert alert-success text-center" role="alert">
             <strong> {{ $line }} </strong>
         </div>
