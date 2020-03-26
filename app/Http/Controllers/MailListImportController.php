@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MailListImportFileRequest;
+use App\Models\MailList;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -70,14 +71,24 @@ class MailListImportController extends Controller
             $emailLink = str_replace('mailto:', '',$crawler->attr('href'));
             return $emailLink;
         });
-        $pattern = "/^[A-Za-z0-9][A-Za-z0-9\.\-_]*[A-Za-z0-9]*@([A-Za-z0-9]+([A-Za-z0-9-]*[A-Za-z0-9]+)*\.)+[A-Za-z]*$/";
-        $emails = preg_grep($pattern, $links);
-        if (empty($emails))
+        if (empty($links)){
             return back()
                 ->withErrors(['msg' => 'На сайте не найдено почтовых адресов!']);
-        $this->saveToDB($emails);
-        return redirect(route('mailer.maillist.index'))
-            ->with(['success' => 'Данные успешно внесены']);
+        }
+        $checkedMails = $this->checkWithRegExp($links);
+        if (!$checkedMails) {
+            return back()
+                ->withErrors(['msg' => 'На сайте не найдено почтовых адресов!']);
+        }
+        $result = $this->saveCheckedData($checkedMails);
+        if (!empty($result)) {
+            return redirect(route('mailer.mailer.index'))
+                ->with(['result' => $result]);
+        } else {
+            return back(0)
+                ->withErrors(['msg' => 'Ошибка сохранения в базу']);
+        }
+
     }
 
     /**
@@ -94,6 +105,24 @@ class MailListImportController extends Controller
         }else{
             return $mails;
         }
+    }
+
+    /**
+     * Принимает список проверенных почтовых адресов, и сохраняет их в таблицу почт. адресов.
+     * Возвращает результат сохранения.
+     * Если почта присутствует в таблице, возвращает сообщение.
+     * @param array $mails
+     * @return array
+     */
+    public function saveCheckedData(array $mails):array
+    {
+        $model = new MailList();
+        $backData = [];
+        foreach ($mails as $mail) {
+            $result = $model->customFindOrNew(['email' => $mail]);
+            $result ? $backData[] =  "Почта {$mail} успешно добавлена": $backData[] = "Почта {$mail} присутствует в списке";
+        }
+        return $backData;
     }
 
 }
