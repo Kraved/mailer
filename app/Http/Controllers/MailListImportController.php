@@ -63,7 +63,7 @@ class MailListImportController extends Controller
      * @param Request $request
      * @return RedirectResponse|Redirector
      */
-    public function saveFromImportSite(Request $request)
+    public function importFromSiteHandler(Request $request)
     {
         $site = $request->site;
         $links = $this->parser($site);

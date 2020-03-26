@@ -3,8 +3,8 @@
 @section('content')
     <div class="text-right mb-3 mr-5">
         <a class="btn btn-primary" href="{{ route('mailer.maillist.create') }}" role="button">Добавить</a>
-        <a class="btn btn-primary" href="{{ route('mailer.maillist.importfromfile') }}" role="button">Импорт из файла</a>
-        <a class="btn btn-primary" href="{{ route('mailer.maillist.importfromsite') }}" role="button">Импорт с сайта</a>
+        <a class="btn btn-primary" href="{{ route('mailer.maillist.import.file') }}" role="button">Импорт из файла</a>
+        <a class="btn btn-primary" href="{{ route('mailer.maillist.import.site') }}" role="button">Импорт с сайта</a>
     </div>
 
     <table class="table table-striped text-center">
