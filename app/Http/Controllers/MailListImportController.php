@@ -6,6 +6,7 @@ use App\Http\Requests\MailListImportFileRequest;
 use App\Models\MailList;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -57,20 +58,15 @@ class MailListImportController extends Controller
 
 
     /**
-     * Парсит сайт в поиске почтовых адресов
+     *
      *
      * @param Request $request
-     * @return RedirectResponse
+     * @return RedirectResponse|Redirector
      */
     public function saveFromImportSite(Request $request)
     {
         $site = $request->site;
-        $html = file_get_contents($site);
-        $crawler = new Crawler($html);
-        $links = $crawler->filter('a')->each(function (Crawler $crawler) {
-            $emailLink = str_replace('mailto:', '',$crawler->attr('href'));
-            return $emailLink;
-        });
+        $links = $this->parser($site);
         if (empty($links)){
             return back()
                 ->withErrors(['msg' => 'На сайте не найдено почтовых адресов!']);
@@ -92,7 +88,26 @@ class MailListImportController extends Controller
     }
 
     /**
+     * Парсит полученный сайт в поиске ссылок.
+     * Возвращает список ссылок с убранным "mailto:"
+     *
+     * @param string $link
+     * @return array
+     */
+    public function parser(string $link):array
+    {
+        $html = file_get_contents($link);
+        $crawler = new Crawler($html);
+        $links = $crawler->filter('a')->each(function (Crawler $crawler) {
+            $link = str_replace('mailto:', '', $crawler->attr('href'));
+            return $link;
+        });
+        return $links;
+    }
+
+    /**
      * Проверка массива данных на соответствие RegEx патерну почтовых адресов
+     *
      * @param array $data
      * @return array|bool
      */
@@ -111,6 +126,7 @@ class MailListImportController extends Controller
      * Принимает список проверенных почтовых адресов, и сохраняет их в таблицу почт. адресов.
      * Возвращает результат сохранения.
      * Если почта присутствует в таблице, возвращает сообщение.
+     *
      * @param array $mails
      * @return array
      */
