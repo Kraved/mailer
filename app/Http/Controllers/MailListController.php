@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\MailListImportFileRequest;
 use App\Models\MailList;
 use App\Repository\MailListRepository;
 use Exception;
@@ -10,7 +9,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
-use Symfony\Component\DomCrawler\Crawler;
 
 
 /**
@@ -125,66 +123,6 @@ class MailListController extends Controller
         }
     }
 
-//    /**
-//     * Вносит данные из файла в базу
-//     *
-//     * @param MailListImportFileRequest $request
-//     * @return RedirectResponse
-//     */
-//    public function saveFromImportFile(MailListImportFileRequest $request)
-//    {
-//        $file = $request->file('importfile');
-//        $mailsArray = file($file);
-//        $mailsArray = array_map(function ($line) {
-//            return str_replace(' ', '', $line);
-//        }, $mailsArray);
-//        $pattern = "/^[A-Za-z0-9][A-Za-z0-9\.\-_]*[A-Za-z0-9]*@([A-Za-z0-9]+([A-Za-z0-9-]*[A-Za-z0-9]+)*\.)+[A-Za-z]*$/";
-//        $data = preg_grep($pattern, $mailsArray);
-//        if (empty($data))
-//            return back()
-//                ->withErrors(['msg' => 'В файле не найдено почтовых адресов!']);
-//
-//        return redirect(route('mailer.maillist.index'))
-//            ->with(['success' => 'Данные успешно внесены']);
-//    }
-//
-//    /**
-//     * Парсит сайт в поиске почтовых адресов
-//     *
-//     * @param Request $request
-//     * @return RedirectResponse
-//     */
-//    public function saveFromImportSite(Request $request)
-//    {
-//        $site = $request->site;
-//        $html = file_get_contents($site);
-//        $crawler = new Crawler($html);
-//        $links = $crawler->filter('a')->each(function (Crawler $crawler) {
-//            $emailLink = str_replace('mailto:', '',$crawler->attr('href'));
-//            return $emailLink;
-//        });
-//        $pattern = "/^[A-Za-z0-9][A-Za-z0-9\.\-_]*[A-Za-z0-9]*@([A-Za-z0-9]+([A-Za-z0-9-]*[A-Za-z0-9]+)*\.)+[A-Za-z]*$/";
-//        $emails = preg_grep($pattern, $links);
-//        if (empty($emails))
-//            return back()
-//                ->withErrors(['msg' => 'На сайте не найдено почтовых адресов!']);
-//        $this->saveToDB($emails);
-//        return redirect(route('mailer.maillist.index'))
-//            ->with(['success' => 'Данные успешно внесены']);
-//    }
-
-    /**
-     * Сохраняет данные из массива в таблицу
-     *
-     * @param array $mailsArray
-     */
-    public function saveToDB(array $mailsArray)
-    {
-        $model = new MailList();
-        foreach ($mailsArray as $email) {
-            $model->firstOrCreate(['email' => $email]);
-        }
-    }
 
     /**
      * Удаляет все данные из таблицы
