@@ -28,11 +28,11 @@ Route::group(['prefix' => 'maillist'], function () {
     Route::resource('mail', 'MailListController')
         ->names('mailer.maillist')
         ->except('show');
-    Route::get('fileimport', 'MailListController@importFromFile')->name('mailer.maillist.importfromfile');
     Route::delete('deleteall', 'MailListController@deleteAll')->name('mailer.maillist.deleteall');
-    Route::get('siteimport', 'MailListController@importFromSite')->name('mailer.maillist.importfromsite');
-    Route::post('importsavefile', 'MailListController@saveFromImportFile')->name('mailer.maillist.savefromimportfile');
-    Route::post('importsavesite', 'MailListController@saveFromImportSite')->name('mailer.maillist.savefromimportsite');
+    Route::get('fileimport', 'MailListImportController@importFromFile')->name('mailer.maillist.importfromfile');
+    Route::get('siteimport', 'MailListImportController@importFromSite')->name('mailer.maillist.importfromsite');
+    Route::post('importsavefile', 'MailListImportController@saveFromImportFile')->name('mailer.maillist.savefromimportfile');
+    Route::post('importsavesite', 'MailListImportController@saveFromImportSite')->name('mailer.maillist.savefromimportsite');
 });
 Route::get('mailer/index', 'MailerController@index')->name('mailer.mailer.index');
 Route::post('mailer/send', 'MailerController@send')->name('mailer.mailer.send');
