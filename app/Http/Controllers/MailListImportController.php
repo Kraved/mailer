@@ -24,7 +24,7 @@ class MailListImportController extends Controller
      *
      * @return View
      */
-    public function importFromFile()
+    public function fileImport()
     {
         return view('mailer.maillist.fileimport');
     }
@@ -34,26 +34,31 @@ class MailListImportController extends Controller
      *
      * @return View
      */
-    public function importFromSite()
+    public function siteImport()
     {
         return view('mailer.maillist.siteimport');
     }
 
-    public function importFromFileHandler(MailListImportFileRequest $request)
+    public function fileImportHandler(MailListImportFileRequest $request)
     {
         $file = $request->file('importfile');
-        $mailsArray = file($file);
-        $mailsArray = array_map(function ($line) {
+        $mails = file($file);
+        $mails = array_map(function ($line) {
             return str_replace(' ', '', $line);
-        }, $mailsArray);
-        $pattern = "/^[A-Za-z0-9][A-Za-z0-9\.\-_]*[A-Za-z0-9]*@([A-Za-z0-9]+([A-Za-z0-9-]*[A-Za-z0-9]+)*\.)+[A-Za-z]*$/";
-        $data = preg_grep($pattern, $mailsArray);
-        if (empty($data))
+        }, $mails);
+        $checkedMails = $this->checkWithRegExp($mails);
+        if (!$checkedMails) {
             return back()
                 ->withErrors(['msg' => 'В файле не найдено почтовых адресов!']);
-        $this->saveToDB($data);
-        return redirect(route('mailer.maillist.index'))
-            ->with(['success' => 'Данные успешно внесены']);
+        }
+        $result = $this->saveCheckedData($checkedMails);
+        if (!empty($result)) {
+            return redirect(route('mailer.mailer.index'))
+                ->with(['result' => $result]);
+        } else {
+            return back(0)
+                ->withErrors(['msg' => 'Ошибка сохранения в базу']);
+        }
     }
 
 
@@ -63,7 +68,7 @@ class MailListImportController extends Controller
      * @param Request $request
      * @return RedirectResponse|Redirector
      */
-    public function importFromSiteHandler(Request $request)
+    public function siteImportHandler(Request $request)
     {
         $site = $request->site;
         $links = $this->parser($site);
