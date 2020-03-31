@@ -36,7 +36,7 @@ class MailListRepository extends CoreRepository
     {
         $data = $this->model->select('email')->get();
         $mails = $data->map(function ($item) {
-            return $item->email;
+            return str_replace("\n", '', $item->email);
         });
         return $mails;
     }
