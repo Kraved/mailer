@@ -1,11 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="text-right mb-3 mr-5">
-        <a class="btn btn-primary" href="{{ route('mailer.maillist.create') }}" role="button">Добавить</a>
-        <a class="btn btn-primary" href="{{ route('mailer.maillist.import.file') }}" role="button">Импорт из файла</a>
-        <a class="btn btn-primary" href="{{ route('mailer.maillist.import.site') }}" role="button">Импорт с сайта</a>
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <a class="btn btn-primary mr-auto export_block" href="{{ route('mailer.maillist.export') }}" role="button">Экспорт</a>
+            <div class="col-3 d-flex justify-content-around import_block">
+                <a class="btn btn-primary" href="{{ route('mailer.maillist.create') }}"
+                   role="button">Добавить</a>
+                <a class="btn btn-primary" href="{{ route('mailer.maillist.import.file') }}"
+                   role="button">Импорт из файла</a>
+                <a class="btn btn-primary" href="{{ route('mailer.maillist.import.file') }}"
+                   role="button">Импорт из файла</a>
+            </div>
+        </div>
     </div>
+
 
     <table class="table table-striped text-center">
         <thead>

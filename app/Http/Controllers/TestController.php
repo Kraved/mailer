@@ -6,6 +6,7 @@ use App\Models\MailList;
 use App\Repository\MailListRepository;
 use Illuminate\Http\Request;
 use Faker\Factory as Faker;
+use Illuminate\Support\Facades\Storage;
 
 class TestController extends Controller
 {
@@ -14,23 +15,13 @@ class TestController extends Controller
         return view('welcome');
     }
 
-    public function test(MailListRepository $listRepository)
+    public function test(MailListRepository $repository)
     {
-        $data = ['it@lexsystems.ru', '123', '123@asdas.ru'];
-        $data = [];
-        $result = $this->checkWithRegExp($data);
-        dd($result);
-    }
-
-    public function checkWithRegExp(array $data)
-    {
-        $pattern = "/^[A-Za-z0-9][A-Za-z0-9\.\-_]*[A-Za-z0-9]*@([A-Za-z0-9]+([A-Za-z0-9-]*[A-Za-z0-9]+)*\.)+[A-Za-z]*$/";
-        $mails = preg_grep($pattern, $data);
-        if (empty($mails)) {
-            return false;
-        }else{
-            return $mails;
-        }
+        $data = $repository->getMailToExport();
+        $tmpFile = tempnam("/tmp","");
+        foreach ($data as $line)
+            file_put_contents($tmpFile, $line , FILE_APPEND);
+        return response()->download($tmpFile, 'export.txt');
     }
 
 }
