@@ -31,6 +31,8 @@ class MailListRepository extends CoreRepository
 
     /**
      * Получение списка почтовых адресов для дальнешего экспорта
+     *
+     * @return Collection
      */
     public function getMailToExport():Collection
     {

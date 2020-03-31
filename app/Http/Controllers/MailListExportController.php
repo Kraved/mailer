@@ -3,9 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Repository\MailListRepository;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class MailListExportController extends Controller
 {
+
+    /**
+     * Экспорт данных из таблицы
+     * Отдает ответ в виде файла
+     *
+     * @param MailListRepository $repository
+     * @return BinaryFileResponse
+     */
     public function export(MailListRepository $repository)
     {
         $data = $repository->getMailToExport();
