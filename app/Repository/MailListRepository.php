@@ -5,6 +5,7 @@ namespace App\Repository;
 
 
 use App\Models\MailList;
+use Illuminate\Support\Collection;
 
 class MailListRepository extends CoreRepository
 {
@@ -28,5 +29,13 @@ class MailListRepository extends CoreRepository
         return $paginator;
     }
 
-
+    /**
+     * Получение списка почтовых адресов для дальнешего экспорта
+     * @return Collection
+     */
+    public function getMailToExport():Collection
+    {
+        $data = $this->model->select('email')->get();
+        return $data;
+    }
 }
