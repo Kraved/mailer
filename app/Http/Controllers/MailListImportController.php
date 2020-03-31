@@ -39,6 +39,12 @@ class MailListImportController extends Controller
         return view('mailer.maillist.siteimport');
     }
 
+    /**
+     * Обработчик импорта данных из файла
+     *
+     * @param MailListImportFileRequest $request
+     * @return RedirectResponse|Redirector
+     */
     public function fileImportHandler(MailListImportFileRequest $request)
     {
         $file = $request->file('importfile');
@@ -63,7 +69,7 @@ class MailListImportController extends Controller
 
 
     /**
-     *
+     * Обработчик импорта данных с сайта
      *
      * @param Request $request
      * @return RedirectResponse|Redirector
