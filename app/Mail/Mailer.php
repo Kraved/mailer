@@ -5,6 +5,7 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\File;
 
 class Mailer extends Mailable
 {
@@ -28,9 +29,21 @@ class Mailer extends Mailable
      */
     public function build()
     {
-        return $this->view('mailer.mail')
+        if (array_key_exists('file', $this->msg)) {
+            $filepath = $this->msg['file'];
+            $filename = str_replace('/tmp/', '', $filepath);
+            return $this->view('mailer.mail')
+                ->with(['msg' => $this->msg['text']])
+                ->subject($this->msg['subject'])
+                ->attach($filepath, [
+                    'as' => $filename,
+                    'mime' => File::mimeType($filepath),
+                ]);
+        }else{
+            return $this->view('mailer.mail')
                 ->with(['msg' => $this->msg['text']])
                 ->subject($this->msg['subject']);
+        }
     }
 
 }
