@@ -12,7 +12,7 @@
             <textarea rows="5" class="form-control mb-3" name="text" id="text">
             </textarea>
             <label for="file">Прикрепите файл(необязательно)</label>
-            <input type="file" class="form-control-file" name="file" id="file">
+            <input type="file" class="form-control-file mb-1" name="file" id="file">
             <button type="submit" class="btn btn-primary">Отправить</button>
         </div>
     </form>
