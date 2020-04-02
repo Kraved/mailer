@@ -33,22 +33,45 @@ class MailerController extends Controller
         return view('mailer.mailer.index');
     }
 
+
     /**
      * Отправка сообщения
      *
      * @param MailerSendRequest $request
-     * @param MailList $mailList
      * @return RedirectResponse|Redirector
      */
-    public function send(MailerSendRequest $request, MailList $mailList)
+    public function send(MailerSendRequest $request)
     {
-        $mails = $mailList->all();
+        $result = $this->sendHandler($request);
+        return redirect(route('mailer.mailer.index'))
+            ->with(['result' => $result]);
+    }
+
+    /** Обработчик отправки сообщения
+     *
+     * @param MailerSendRequest $request
+     * @return array
+     */
+    public function sendHandler(MailerSendRequest $request)
+    {
+        $tmpdir = '/tmp';
+        $mails = MailList::all();
         $message = (array)$request->all();
+        if ($request->hasFile('file')) {
+            $file = $request->file('file')->move($tmpdir, $request->file('file')->getClientOriginalName());
+            $filePath = $file->getRealPath();
+            $message['file'] = $filePath;
+        }
+        $result = [];
         foreach ($mails as $item) {
-            $this->dispatch(new MailerJob($item->email,$message));
+            if ($request->hasFile('file')) {
+                $job = (new MailerJob($item->email, $message))->onConnection('sync');
+            }else{
+                $job = new MailerJob($item->email, $message);
+            }
+            $this->dispatch($job);
             $result[] = "Сообщение на почту {$item->email} поставлено в очередь";
         }
-        return redirect(route('mailer.mailer.index'))
-            ->with(['success' => $result]);
+        return $result;
     }
-}
+};

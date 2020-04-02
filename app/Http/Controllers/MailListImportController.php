@@ -51,7 +51,7 @@ class MailListImportController extends Controller
         $mails = file($file);
         $mails = array_map(function ($line) {
             $line =  str_replace(' ', '', $line);
-            $line =  str_replace('\n', '', $line);
+            $line =  str_replace("\n", '', $line);
             return $line;
         }, $mails);
         $checkedMails = $this->checkWithRegExp($mails);
