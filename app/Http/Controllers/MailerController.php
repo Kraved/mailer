@@ -64,9 +64,14 @@ class MailerController extends Controller
         }
         $result = [];
         foreach ($mails as $item) {
-            $this->dispatch(new MailerJob($item->email, $message));
+            if ($request->hasFile('file')) {
+                $job = (new MailerJob($item->email, $message))->onConnection('sync');
+            }else{
+                $job = new MailerJob($item->email, $message);
+            }
+            $this->dispatch($job);
             $result[] = "Сообщение на почту {$item->email} поставлено в очередь";
         }
         return $result;
     }
-}
+};
