@@ -17,9 +17,6 @@ Route::get('/', function () {
     return redirect(route('mailer.maillist.index'));
 });
 
-Route::get('/test', 'TestController@test');
-Route::get('/index', 'TestController@index');
-
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
