@@ -19,8 +19,10 @@ class MailListExportController extends Controller
     {
         $data = $repository->getMailToExport();
         $tmpFile = tempnam("/tmp","");
-        foreach ($data as $line)
+        foreach ($data as $line){
+            $line = $line . "\n";
             file_put_contents($tmpFile, $line , FILE_APPEND);
+        }
         return response()->download($tmpFile, 'export.txt');
     }
 }
