@@ -2,27 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Repository\MailListRepository;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use App\Contracts\MailListExport;
 
 class MailListExportController extends Controller
 {
-
     /**
-     * Экспорт данных из таблицы
-     * Отдает ответ в виде файла
-     *
-     * @param MailListRepository $repository
-     * @return BinaryFileResponse
+     * Экспорт списка адресов
+     * @param MailListExport $exportService
+     * @return mixed
      */
-    public function export(MailListRepository $repository)
+    public function export(MailListExport $exportService)
     {
-        $data = $repository->getMailToExport();
-        $tmpFile = tempnam("/tmp","");
-        foreach ($data as $line){
-            $line = $line . "\n";
-            file_put_contents($tmpFile, $line , FILE_APPEND);
-        }
-        return response()->download($tmpFile, 'export.txt');
+        return $exportService->getResponse();
     }
 }

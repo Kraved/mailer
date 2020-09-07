@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MailList;
 use App\Repository\MailListRepository;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
@@ -58,7 +59,8 @@ class MailListController extends Controller
         $data = $request->all();
         $result = $mailList->create($data);
         if ($result) {
-            return redirect(route('mailer.maillist.index'))->with(['success' => 'Почта успешно внесена']);
+            return redirect(route('mailer.maillist.index'))
+                ->with(['success' => 'Почта успешно внесена']);
         } else {
             return back()
                 ->withErrors(['msg' => 'Ошибка добавления почты'])

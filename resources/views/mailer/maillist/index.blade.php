@@ -15,7 +15,6 @@
         </div>
     </div>
 
-
     <table class="table table-striped text-center">
         <thead>
         <tr>
