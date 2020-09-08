@@ -48,7 +48,8 @@ class TxtMailListExportService implements MailListExport
     {
         $filePath = $this->getExportFilePath();
         if ($filePath) {
-            return response()->download($this->getExportFilePath(), 'export.txt');
+            return response()->download($filePath, 'export.txt')
+                ->deleteFileAfterSend(true);
         } else {
             return back()
                 ->withErrors(['error' => 'Нет данных для экспорта']);
