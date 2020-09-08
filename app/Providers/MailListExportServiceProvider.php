@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Contracts\MailListExport;
-use App\Services\TxtMailListExportService;
+use App\Contracts\Maillist\Export\MailListExport;
+use App\Services\Maillist\Export\TxtFileExportService;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -19,7 +19,7 @@ class MailListExportServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(MailListExport::class, TxtMailListExportService::class);
+        $this->app->bind(MailListExport::class, TxtFileExportService::class);
     }
 
     /**
