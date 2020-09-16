@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\MailListExport;
+use App\Contracts\Maillist\Export\MailListExport;
 
 class MailListExportController extends Controller
 {

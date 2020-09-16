@@ -178,7 +178,8 @@ return [
         /*
          * User's Service Providers
          */
-        App\Providers\MailListExportServiceProvider::class
+        App\Providers\MailListExportServiceProvider::class,
+        App\Providers\MailListImportServiceProvider::class
 
     ],
 

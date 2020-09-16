@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Http\Requests\Maillist;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+
+class ImportRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return Auth::check();
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'importfile' => 'mimetypes:text/plain',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'importfile.required' => 'Загрузите файл!',
+            'importfile.mimetypes' => 'Неверный формат файла!',
+        ];
+    }
+
+
+}

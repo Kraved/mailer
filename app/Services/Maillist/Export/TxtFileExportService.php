@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Maillist\Export;
 
-use App\Contracts\MailListExport;
+use App\Contracts\Maillist\Export\MailListExport;
 use App\Repository\MailListRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * Class TxtMailListExportService
  * @package App\Services
  */
-class TxtMailListExportService implements MailListExport
+class TxtFileExportService implements MailListExport
 {
 
     /**

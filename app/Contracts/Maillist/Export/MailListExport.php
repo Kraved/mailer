@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Contracts;
+namespace App\Contracts\Maillist\Export;
 
 /**
  * Интерфейс MailListExport
