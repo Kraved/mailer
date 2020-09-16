@@ -4,13 +4,11 @@
     <div class="container-fluid">
         <div class="row mb-3">
             <a class="btn btn-primary mr-auto export_block" href="{{ route('mailer.maillist.export') }}" role="button">Экспорт</a>
-            <div class="col-3 d-flex justify-content-around import_block">
+            <div class="col-2 d-flex justify-content-around import_block">
                 <a class="btn btn-primary" href="{{ route('mailer.maillist.create') }}"
                    role="button">Добавить</a>
-                <a class="btn btn-primary" href="{{ route('mailer.maillist.import.site') }}"
-                   role="button">Импорт с сайта</a>
-                <a class="btn btn-primary" href="{{ route('mailer.maillist.import.file') }}"
-                   role="button">Импорт из файла</a>
+                <a class="btn btn-primary" href="{{ route('mailer.maillist.import.index') }}"
+                   role="button">Импорт</a>
             </div>
         </div>
     </div>
