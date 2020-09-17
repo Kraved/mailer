@@ -3,7 +3,7 @@
 namespace App\Services\Maillist\Export;
 
 use App\Contracts\Maillist\Export\MailListExport;
-use App\Repository\MailListRepository;
+use App\Models\MailList;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use \Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
@@ -23,16 +23,19 @@ class TxtFileExportService implements MailListExport
      */
     public function getExportFilePath(): string
     {
-        $repository = app(MailListRepository::class);
-        /** @var Collection $data */
-        $data = $repository->getMailToExport();
+        $model = app(MailList::class);
+        $allRecords = $model->all();
+        /** @var Collection $allRecords */
+        $data = $allRecords->map(function ($key) {
+            return $key->email;
+        });
         if ($data->isEmpty()) {
             return false;
         }
         $dir = 'storage/tmp';
         $tmpFilePath = tempnam($dir, 'mailer_');
         if (!$tmpFilePath)
-            throw  new FileNotFoundException($tmpFilePath);
+            throw new FileNotFoundException($tmpFilePath);
         foreach ($data as $line) {
             file_put_contents($tmpFilePath, $line . "\n", FILE_APPEND);
         }

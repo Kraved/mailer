@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MailList;
-use App\Repository\MailListRepository;
 use Exception;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
@@ -27,13 +25,13 @@ class MailListController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param MailListRepository $listRepository
+     * @param MailList $mailList
      * @return View
      */
-    public function index(MailListRepository $listRepository)
+    public function index(MailList $mailList)
     {
 
-        $emails = $listRepository->getAllWithPaginate(30);
+        $emails = $mailList->paginate(30);
         return view('mailer.maillist.index', compact('emails'));
     }
 
