@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\MailerSendRequest;
+use App\Http\Requests\Mailer\SendRequest;
 use App\Jobs\MailerJob;
 use App\Models\MailList;
 use Illuminate\Http\RedirectResponse;
@@ -37,10 +37,10 @@ class MailerController extends Controller
     /**
      * Отправка сообщения
      *
-     * @param MailerSendRequest $request
+     * @param SendRequest $request
      * @return RedirectResponse|Redirector
      */
-    public function send(MailerSendRequest $request)
+    public function send(SendRequest $request)
     {
         $result = $this->sendHandler($request);
         return redirect(route('mailer.mailer.index'))
@@ -49,10 +49,10 @@ class MailerController extends Controller
 
     /** Обработчик отправки сообщения
      *
-     * @param MailerSendRequest $request
+     * @param SendRequest $request
      * @return array
      */
-    public function sendHandler(MailerSendRequest $request)
+    public function sendHandler(SendRequest $request)
     {
         $tmpdir = '/tmp';
         $mails = MailList::all();

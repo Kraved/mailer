@@ -26,6 +26,7 @@ class ImportRequest extends FormRequest
     {
         return [
             'importfile' => 'mimetypes:text/plain',
+            'site' => 'string|max:500|min:10'
         ];
     }
 
@@ -34,6 +35,9 @@ class ImportRequest extends FormRequest
         return [
             'importfile.required' => 'Загрузите файл!',
             'importfile.mimetypes' => 'Неверный формат файла!',
+            'site.string' => 'Поле должно содержать строку!',
+            'site.max' => 'Максимальная длинна [:max] символов',
+            'site.min' => 'Минимальная длинна [:min] символов',
         ];
     }
 
