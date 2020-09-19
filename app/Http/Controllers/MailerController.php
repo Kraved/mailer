@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Mailer\Mailer;
 use App\Http\Requests\Mailer\SendRequest;
-use App\Jobs\MailerJob;
-use App\Models\MailList;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
 /**
@@ -34,44 +31,20 @@ class MailerController extends Controller
     }
 
 
-    /**
-     * Отправка сообщения
-     *
-     * @param SendRequest $request
-     * @return RedirectResponse|Redirector
-     */
     public function send(SendRequest $request)
     {
-        $result = $this->sendHandler($request);
-        return redirect(route('mailer.mailer.index'))
-            ->with(['result' => $result]);
+        /** @var Mailer $mailer */
+        $mailer = app(Mailer::class, [$request]);
+        $result = $mailer->send();
+        if ($result) {
+            return redirect(route('mailer.mailer.index'))
+                ->with(['success' => 'Сообщение поставлено в очередь на отправку']);
+        } else {
+            return back()
+                ->withErrors(['error' => 'Ошибка отправки сообщения!', 'error1' => 'Список рассылки пуст!'])
+                ->withInput();
+
+        }
     }
 
-    /** Обработчик отправки сообщения
-     *
-     * @param SendRequest $request
-     * @return array
-     */
-    public function sendHandler(SendRequest $request)
-    {
-        $tmpdir = '/tmp';
-        $mails = MailList::all();
-        $message = (array)$request->all();
-        if ($request->hasFile('file')) {
-            $file = $request->file('file')->move($tmpdir, $request->file('file')->getClientOriginalName());
-            $filePath = $file->getRealPath();
-            $message['file'] = $filePath;
-        }
-        $result = [];
-        foreach ($mails as $item) {
-            if ($request->hasFile('file')) {
-                $job = (new MailerJob($item->email, $message))->onConnection('sync');
-            }else{
-                $job = new MailerJob($item->email, $message);
-            }
-            $this->dispatch($job);
-            $result[] = "Сообщение на почту {$item->email} поставлено в очередь";
-        }
-        return $result;
-    }
-};
+}

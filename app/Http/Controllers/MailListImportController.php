@@ -22,6 +22,7 @@ class MailListImportController extends Controller
     }
 
     /**
+     * Сохранение импортируемых данных в БД
      * @param ImportRequest $request
      * @return RedirectResponse
      */
