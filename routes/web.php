@@ -27,8 +27,6 @@ Route::name('mailer.')->prefix('maillist')->group(function () {
         ->names('maillist')
         ->except('show');
     Route::delete('deleteall', 'MailListController@deleteAll')->name('maillist.deleteall');
-    Route::get('/import/file', 'MailListImportController@fileImport')->name('maillist.import.file');
-    Route::get('/import/site', 'MailListImportController@siteImport')->name('maillist.import.site');
     Route::post('/import/save', 'MailListImportController@save')->name('maillist.import.save');
     Route::get('/import', 'MailListImportController@index')->name('maillist.import.index');
     Route::get('/export', 'MailListExportController@export')->name('maillist.export');
