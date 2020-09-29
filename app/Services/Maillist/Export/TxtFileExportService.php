@@ -23,6 +23,22 @@ class TxtFileExportService implements MailListExport
      */
     public function getExportFilePath(): string
     {
+        $dir = 'storage/tmp';
+        $tmpFilePath = tempnam($dir, 'mailer_');
+        if (!$tmpFilePath)
+            throw new FileNotFoundException($tmpFilePath);
+
+        return $tmpFilePath;
+    }
+
+    /**
+     * Записывает данные в экспортный файл
+     * Возвращает путь экспортного файла, либо фолс, если нет данных
+     * @param string $filePath
+     * @return string|bool
+     */
+    public function writeData(string $filePath)
+    {
         $model = app(MailList::class);
         $allRecords = $model->all();
         /** @var Collection $allRecords */
@@ -32,25 +48,21 @@ class TxtFileExportService implements MailListExport
         if ($data->isEmpty()) {
             return false;
         }
-        $dir = 'storage/tmp';
-        $tmpFilePath = tempnam($dir, 'mailer_');
-        if (!$tmpFilePath)
-            throw new FileNotFoundException($tmpFilePath);
         foreach ($data as $line) {
-            file_put_contents($tmpFilePath, $line . "\n", FILE_APPEND);
+            file_put_contents($filePath, $line . "\n", FILE_APPEND);
         }
-        return $tmpFilePath;
+        return $filePath;
     }
-
 
     /**
      * Возвращает ответ для скачивания файла, или сообщение об отсутствии данных
      * @return RedirectResponse|BinaryFileResponse
      */
-    function getResponse()
+    public function getResponse()
     {
         $filePath = $this->getExportFilePath();
-        if ($filePath) {
+        $result = $this->writeData($filePath);
+        if ($result) {
             return response()->download($filePath, 'export.txt')
                 ->deleteFileAfterSend(true);
         } else {
