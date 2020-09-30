@@ -12,6 +12,13 @@ use Illuminate\View\View;
 
 class MailListImportController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('verified');
+    }
+
+
     /**
      * Отображает форму импорта из файла, или из сайта
      * @return Factory|View
@@ -28,7 +35,6 @@ class MailListImportController extends Controller
      */
     public function save(ImportRequest $request)
     {
-
         /** @var SiteImport|FileImport $importService */
         $importService = app(ImportBuilder::class, [$request])->build();
         $result = $importService->import();
