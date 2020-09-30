@@ -54,8 +54,8 @@ class MailListController extends Controller
      */
     public function store(Request $request, MailList $mailList)
     {
-        $data = $request->all();
-        $result = $mailList->create($data);
+        $data = $request->only('email');
+        $result = $mailList->firstOrCreate($data);
         if ($result) {
             return redirect(route('mailer.maillist.index'))
                 ->with(['success' => 'Почта успешно внесена']);
