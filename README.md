@@ -11,7 +11,7 @@
 2. Установить зависимости composer(composer install)
 3. Установить зависимости NPM(npm install)
 4. Создать пустую базу для приложения
-5. Сгенерировать ключ приложения(php artisan key:generate --show)
+5. Сгенерировать ключ приложения(php artisan key:generate)
 6. Переименовать .env.example в .env, и заполнить его необходимыми данными(Раздел БД, раздел почта, основной раздел)
 7. Выполнить миграцию (php artisan migrate --seed). 
 8. Создать временную директорию и назначить на нее права (mkdir -p storage/app/public/tmp && sudo chown -R www-data:www-data storage/app/public) 
